@@ -1,10 +1,25 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.app.project.viewer.result;
@@ -35,8 +50,12 @@ import burai.app.project.viewer.result.log.QEFXCrashButton;
 import burai.app.project.viewer.result.log.QEFXErrorButton;
 import burai.app.project.viewer.result.log.QEFXInputButton;
 import burai.app.project.viewer.result.log.QEFXOutputButton;
+import burai.app.project.viewer.result.log.QEFXPhononButton;
+import burai.app.project.viewer.result.phonon.QEFXPhononGraphButton;
 import burai.project.Project;
 import burai.run.RunningManager;
+import java.io.File;
+import java.io.FilenameFilter;
 
 public class QEFXResultExplorer {
 
@@ -117,6 +136,7 @@ public class QEFXResultExplorer {
         this.updateMdButtons();
         this.updateDosButtons();
         this.updateBandButtons();
+        this.updatePhononButtons();
 
         int numNode1 = this.buttonList == null ? 0 : this.buttonList.size();
         int numNode2 = this.tilePane.getChildren().size();
@@ -291,6 +311,30 @@ public class QEFXResultExplorer {
         this.updateButton("QEFXBandButton", () -> {
             return QEFXBandButton.getWrapper(this.projectController, this.project);
         });
+    }
+    
+    /*Edited By Jason D'Netto, adding phonon results button*/
+    private void updatePhononButtons(){
+        //graph button
+        this.updateButton("QEFXPhononGraphButton", () -> {
+            return QEFXPhononGraphButton.getWrapper(this.projectController, this.project);
+        });        
+        //display log file for each of the dynamical matrix files
+        String dirPath = project == null ? null : project.getDirectoryPath();
+        File dir = new File(dirPath);
+        String filePrefix = "dyn";
+        String[] fileNames = dir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name){
+                return name.startsWith(filePrefix);
+            }
+        });
+        for (int i=0;i<fileNames.length;i++) {
+            final int i2 = i;
+            this.updateButton("QEFXPhononButton#DYN"+Integer.toString(i), () -> {
+                return QEFXPhononButton.getWrapper(this.projectController, this.project,i2);
+            });
+        }
     }
 
     private <T extends QEFXResultButton<?, ?>> boolean updateButton(String key, ButtonGetter<T> buttonGetter) {

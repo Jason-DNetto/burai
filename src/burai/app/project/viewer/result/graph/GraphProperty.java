@@ -1,10 +1,25 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.app.project.viewer.result.graph;
@@ -66,6 +81,23 @@ public class GraphProperty {
         this.yAuto = true;
         this.yLower = 0.0;
         this.yUpper = 0.0;
+        this.yTick = -1.0;
+        this.seriesList = null;
+    }
+    
+    public GraphProperty(double[] XLim, double[] YLim) {
+        this.avail = true;
+        this.calcID = -1;
+        this.title = "TITLE";
+        this.xLabel = "X-AXIS";
+        this.xAuto = false;
+        this.xLower = XLim[0];
+        this.xUpper = XLim[1];
+        this.xTick = -1.0;
+        this.yLabel = "Y-AXIS";
+        this.yAuto = false;
+        this.yLower = YLim[0];
+        this.yUpper = YLim[1];
         this.yTick = -1.0;
         this.seriesList = null;
     }

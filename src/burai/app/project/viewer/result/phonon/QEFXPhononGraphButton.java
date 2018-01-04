@@ -22,76 +22,80 @@
  * original code available from https://github.com/nisihara1/burai
  */
 
-package burai.app.project.viewer.result.band;
+package burai.app.project.viewer.result.phonon;
 
+import burai.app.project.viewer.result.phonon.*;
 import java.io.File;
 import java.io.IOException;
 
 import burai.app.project.QEFXProjectController;
-import burai.app.project.editor.result.band.QEFXBandEditor;
+import burai.app.project.editor.result.phonon.QEFXPhononEditor;
 import burai.app.project.viewer.result.QEFXResultButton;
 import burai.app.project.viewer.result.QEFXResultButtonWrapper;
 import burai.project.Project;
-import burai.project.property.BandData;
-import burai.project.property.ProjectBand;
-import burai.project.property.ProjectBandPaths;
+import burai.project.property.PhData;
+import burai.project.property.ProjectPh;
+import burai.project.property.ProjectPhononPaths;
 import burai.project.property.ProjectEnergies;
 import burai.project.property.ProjectProperty;
 import burai.project.property.ProjectStatus;
 
-public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEditor> {
+public class QEFXPhononGraphButton extends QEFXResultButton<QEFXPhononViewer, QEFXPhononEditor> {
 
-    private static final String FILE_NAME = ".burai.graph.band";
+    private static final String FILE_NAME = ".burai.graph.phonon";
 
-    private static final String BUTTON_TITLE = "BAND";
+    private static final String BUTTON_TITLE = "PHONON";
     private static final String BUTTON_FONT_COLOR = "-fx-text-fill: ivory";
     private static final String BUTTON_BACKGROUND = "-fx-background-color: derive(lightslategrey, -55.0%)";
 
-    public static QEFXResultButtonWrapper<QEFXBandButton> getWrapper(QEFXProjectController projectController, Project project) {
+    public static QEFXResultButtonWrapper<QEFXPhononGraphButton> getWrapper(QEFXProjectController projectController, Project project) {
 
         ProjectProperty projectProperty = project == null ? null : project.getProperty();
         if (projectProperty == null) {
-            //System.out.println("projectProperty is null, QEFXBandButton.java");//DEBUG
+            //System.out.println("projectProperty is null, QEFXPhononGraphButton.java");//DEBUG
             return null;
         }
 
         ProjectStatus projectStatus = projectProperty.getStatus();
-        if (projectStatus == null || (!projectStatus.isBandDone())) {
-            //System.out.println("projectStatus is null, QEFXBandButton.java");//DEBUG
+        if (projectStatus == null || (!projectStatus.isPhDone())) {
+            //System.out.println("projectStatus is null, QEFXPhononGraphButton.java");//DEBUG
             return null;
         }
 
-        ProjectEnergies projectEnergies = projectProperty.getFermiEnergies();
-        //if (projectEnergies == null || projectEnergies.numEnergies() < 1) {
-        if (projectEnergies == null) {//tell someone they made a mistake rather than telling them nothing
-            /*if (projectEnergies == null) {
-                //System.out.println("projectEnergies is null, QEFXBandButton.java");//DEBUG
+        ProjectEnergies projectFrequencies = projectProperty.getPhFrequencies();
+        if (projectFrequencies == null) {//tell someone they made a mistake rather than telling them nothing
+            //user error reported to user when displaying the graph
+            return null;
+        }
+
+        ProjectPh projectPhonon = projectProperty.getPh();
+        if (projectPhonon == null) {
+            //System.out.println("projectPhonon is null, QEFXPhononGraphButton.java");//DEBUG
+            return null;
+        }
+
+        ProjectPhononPaths projectPhononPaths = projectProperty.getPhononPaths();
+        if (projectPhononPaths == null || projectPhononPaths.numPoints() < 1) {
+            if (projectPhononPaths == null) {
+                //System.out.println("projectPhononPaths is null, QEFXPhononGraphButton.java");//DEBUG
             } else {
-                //System.out.println("projectEnergies.numerergies < 1, QEFXBandButton.java");//DEBUG
-            }*/
-            return null;
+                //System.out.println("projectPhononPaths.numpoints < 1, QEFXPhononGraphButton.java");//DEBUG
+            }
+            //return null;
         }
 
-        ProjectBand projectBand = projectProperty.getBand();
-        if (projectBand == null) {
-            //System.out.println("projectBand is null, QEFXBandButton.java");//DEBUG
-            return null;
-        }
-
-        ProjectBandPaths projectBandPaths = projectProperty.getBandPaths();
-        if (projectBandPaths == null || projectBandPaths.numPoints() < 1) {
-            //System.out.println("projectBandPaths is null, QEFXBandButton.java");//DEBUG
-            return null;
-        }
-
-        BandData bandData = projectBand.getBandData();
-        if (bandData == null) {
-            //System.out.println("bandData is null, QEFXBandButton.java");//DEBUG
+        PhData phData = projectPhonon.getPhdata();
+        if (phData == null || phData.numPoints() < 1) {
+            if(phData==null){
+                //System.out.println("phData is null, QEFXPhononGraphButton.java");//DEBUG
+            } else {
+                //System.out.println("phData.numpoints < 1, QEFXPhononGraphButton.java");//DEBUG
+            }
             return null;
         }
 
         String dirPath = project == null ? null : project.getDirectoryPath();
-        String fileName = project == null ? null : (project.getPrefixName() + ".band1.gnu");
+        String fileName = project == null ? null : (project.getPrefixName() + ".phonon.gnu");
 
         File file = null;
         if (dirPath != null && fileName != null) {
@@ -109,7 +113,7 @@ public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEdi
         }
 
         return () -> {
-            QEFXBandButton button = new QEFXBandButton(projectController, projectProperty);
+            QEFXPhononGraphButton button = new QEFXPhononGraphButton(projectController, projectProperty);
 
             String propPath = project == null ? null : project.getDirectoryPath();
             File propFile = propPath == null ? null : new File(propPath, FILE_NAME);
@@ -125,7 +129,7 @@ public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEdi
 
     private ProjectProperty projectProperty;
 
-    private QEFXBandButton(QEFXProjectController projectController, ProjectProperty projectProperty) {
+    private QEFXPhononGraphButton(QEFXProjectController projectController, ProjectProperty projectProperty) {
         super(projectController, BUTTON_TITLE, null);
 
         if (projectProperty == null) {
@@ -140,15 +144,15 @@ public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEdi
     }
 
     @Override
-    protected final QEFXBandViewer createResultViewer() throws IOException {
+    protected final QEFXPhononViewer createResultViewer() throws IOException {
         if (this.projectController == null) {
             return null;
         }
 
-        QEFXBandViewer viewer = new QEFXBandViewer(this.projectController, this.projectProperty);
+        QEFXPhononViewer viewer = new QEFXPhononViewer(this.projectController, this.projectProperty);
 
         if (viewer != null) {
-            QEFXBandViewerController controller = viewer.getController();
+            QEFXPhononViewerController controller = viewer.getController();
             if (controller != null) {
                 controller.setPropertyFile(this.propertyFile);
             }
@@ -158,7 +162,7 @@ public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEdi
     }
 
     @Override
-    protected final QEFXBandEditor createResultEditor(QEFXBandViewer resultViewer) throws IOException {
+    protected final QEFXPhononEditor createResultEditor(QEFXPhononViewer resultViewer) throws IOException {
         if (resultViewer == null) {
             return null;
         }
@@ -167,6 +171,6 @@ public class QEFXBandButton extends QEFXResultButton<QEFXBandViewer, QEFXBandEdi
             return null;
         }
 
-        return new QEFXBandEditor(this.projectController, resultViewer);
+        return new QEFXPhononEditor(this.projectController, resultViewer);
     }
 }
