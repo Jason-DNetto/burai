@@ -1,10 +1,25 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.input.correcter;
@@ -88,60 +103,69 @@ public class QESCFInputCorrecter extends QEInputCorrecter {
                 this.nmlSystem.setValue("ecutrho = " + ecutrho);
             }
         }
+        /*Edited by Jason D'Netto
+        occupations, smearing and degauss need to be able to be removed from the namelist
+        occupations=smearing is for metals
+        occuptions=fixed is for insulators with a gap
+        any system that is not a metal or an insulator with a gap must not have 
+        values for occupations, smearing or degauss written to the namelist*/
+        
+        if(this.nmlSystem.getValueBuffer("occupations").hasValue()){        
+            /*
+             * occupations
+             */
+            String occupations = "";
+            value = this.nmlSystem.getValue("occupations");
+            if (value != null) {
+                occupations = value.getCharacterValue();
+            } else {
+                occupations = "smearing";
+                this.nmlSystem.setValue("occupations = " + occupations);
+            }
 
-        /*
-         * occupations
-         */
-        String occupations = "";
-        value = this.nmlSystem.getValue("occupations");
-        if (value != null) {
-            occupations = value.getCharacterValue();
-        } else {
-            occupations = "smearing";
-            this.nmlSystem.setValue("occupations = " + occupations);
-        }
+            /*
+             * smearing
+             */
+            String smearing = "";
+            value = this.nmlSystem.getValue("smearing");
+            if (value != null) {
+                smearing = value.getCharacterValue();
+            } else {
+                if ("smearing".equals(occupations)) {
+                    smearing = "gaussian";
+                    this.nmlSystem.setValue("smearing = " + smearing);
+                }
+            }
 
-        /*
-         * smearing
-         */
-        String smearing = "";
-        value = this.nmlSystem.getValue("smearing");
-        if (value != null) {
-            smearing = value.getCharacterValue();
-        } else {
-            if ("smearing".equals(occupations)) {
+            if ("gauss".equals(smearing)) {
                 smearing = "gaussian";
                 this.nmlSystem.setValue("smearing = " + smearing);
+            } else if ("m-p".equals(smearing) || "mp".equals(smearing)) {
+                smearing = "methfessel-paxton";
+                this.nmlSystem.setValue("smearing = " + smearing);
+            } else if ("cold".equals(smearing) || "m-v".equals(smearing) || "mv".equals(smearing)) {
+                smearing = "marzari-vanderbilt";
+                this.nmlSystem.setValue("smearing = " + smearing);
+            } else if ("f-d".equals(smearing) || "fd".equals(smearing)) {
+                smearing = "fermi-dirac";
+                this.nmlSystem.setValue("smearing = " + smearing);
+            }
+
+            /*
+             * degauss
+             */
+            double degauss = 0.0;
+            value = this.nmlSystem.getValue("degauss");
+            if (value != null) {
+                degauss = value.getRealValue();
+            } else {
+                if ("smearing".equals(occupations)) {
+                    degauss = 0.01;
+                    this.nmlSystem.setValue("degauss = " + degauss);
+                }
             }
         }
-
-        if ("gauss".equals(smearing)) {
-            smearing = "gaussian";
-            this.nmlSystem.setValue("smearing = " + smearing);
-        } else if ("m-p".equals(smearing) || "mp".equals(smearing)) {
-            smearing = "methfessel-paxton";
-            this.nmlSystem.setValue("smearing = " + smearing);
-        } else if ("cold".equals(smearing) || "m-v".equals(smearing) || "mv".equals(smearing)) {
-            smearing = "marzari-vanderbilt";
-            this.nmlSystem.setValue("smearing = " + smearing);
-        } else if ("f-d".equals(smearing) || "fd".equals(smearing)) {
-            smearing = "fermi-dirac";
-            this.nmlSystem.setValue("smearing = " + smearing);
-        }
-
-        /*
-         * degauss
-         */
-        double degauss = 0.0;
-        value = this.nmlSystem.getValue("degauss");
-        if (value != null) {
-            degauss = value.getRealValue();
-        } else {
-            if ("smearing".equals(occupations)) {
-                degauss = 0.01;
-                this.nmlSystem.setValue("degauss = " + degauss);
-            }
-        }
+        //end edit
 
         /*
          * Magnetization (nspin & starting_magnetization)
@@ -228,6 +252,8 @@ public class QESCFInputCorrecter extends QEInputCorrecter {
             boolean hasData = false;
             int[] kGrid = this.cardKPoints.getKGrid();
             if (kGrid != null && kGrid.length > 2) {
+                /*edited by Jason D'Netto
+                0 is a valid value*/
                 if (kGrid[0] > 0 && kGrid[1] > 0 && kGrid[2] > 0) {
                     hasData = true;
                 }

@@ -1,10 +1,25 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.input;
@@ -23,6 +38,8 @@ import burai.input.card.QEAtomicSpecies;
 import burai.input.card.QECard;
 import burai.input.card.QECellParameters;
 import burai.input.card.QEKPoints;
+import burai.input.card.QENatTodo;
+import burai.input.card.QEQPoints;
 import burai.input.correcter.QEInputCorrecter;
 import burai.input.namelist.QENamelist;
 import burai.input.namelist.QEValue;
@@ -37,6 +54,11 @@ public abstract class QEInput {
     public static final String NAMELIST_DOS = "DOS";
     public static final String NAMELIST_PROJWFC = "PROJWFC";
     public static final String NAMELIST_BANDS = "BANDS";
+    //phonon namelist entries
+    public static final String NAMELIST_INPUTPH = "INPUTPH";
+    public static final String NAMELIST_INPUT = "INPUT";//for q2r.x and matdyn.x
+    public static final String NAMELIST_PLOTBANDS = "PLOTBANDS";//for plotbands.x
+    //end phonon
 
     public static String[] listNamelistKeys() {
         return new String[] {
@@ -47,7 +69,10 @@ public abstract class QEInput {
                 NAMELIST_CELL,
                 NAMELIST_DOS,
                 NAMELIST_PROJWFC,
-                NAMELIST_BANDS
+                NAMELIST_BANDS,
+                NAMELIST_INPUTPH,
+                NAMELIST_INPUT,
+                NAMELIST_PLOTBANDS
         };
     }
 
@@ -56,7 +81,11 @@ public abstract class QEInput {
                 QEKPoints.CARD_NAME,
                 QECellParameters.CARD_NAME,
                 QEAtomicSpecies.CARD_NAME,
-                QEAtomicPositions.CARD_NAME
+                QEAtomicPositions.CARD_NAME,
+                //phonon cards
+                QEQPoints.CARD_NAME,
+                QENatTodo.CARD_NAME
+                
         };
     }
 
@@ -270,7 +299,8 @@ public abstract class QEInput {
         for (String keyNamelist : keyNamelists) {
             QENamelist namelist = this.namelists.get(keyNamelist);
             if (namelist != null) {
-                str = str + namelist.toString() + System.lineSeparator();
+                //str = str + namelist.toString() + System.lineSeparator();
+                str = str + namelist.toString();
             }
         }
 
@@ -291,11 +321,17 @@ public abstract class QEInput {
                 }
 
                 if (toShow) {
-                    str = str + card.toString() + System.lineSeparator();
+                    if (this.namelists.get(NAMELIST_INPUT)!=null && card instanceof QEKPoints) {
+                        QEKPoints card2 = (QEKPoints)card;
+                        str = str + card2.toString(false) + System.lineSeparator();
+                    } else {
+                        str = str + card.toString() + System.lineSeparator();
+                    }
+                    //str = str + card.toString();
                 }
             }
         }
-
+        str = str+System.lineSeparator();//end line for fortran
         return str;
     }
 }

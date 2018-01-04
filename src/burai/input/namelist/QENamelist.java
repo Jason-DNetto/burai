@@ -1,10 +1,25 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.input.namelist;
@@ -17,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import burai.com.str.SmartSplitter;
+import static burai.input.QEInput.NAMELIST_PLOTBANDS;
 
 public class QENamelist {
 
@@ -31,6 +47,8 @@ public class QENamelist {
     private List<QEValue> deletingValues;
 
     private List<QEValue> bindingValues;
+    
+    private List<QEValue> plainValues;
 
     public QENamelist(String listName) {
         if (listName == null || listName.isEmpty()) {
@@ -43,6 +61,7 @@ public class QENamelist {
         this.protectedValues = null;
         this.deletingValues = null;
         this.bindingValues = null;
+        this.plainValues = null;
     }
 
     public void addListener(String name, QEValueListener listener) {
@@ -127,6 +146,13 @@ public class QENamelist {
 
         this.bindingValues.add(QEValueBase.getInstance(name));
     }
+    
+    public void addPlainValue(String name){
+        if (this.plainValues == null) {
+            this.plainValues = new ArrayList<QEValue>();
+        }
+        this.plainValues.add(QEValuePlain.getInstance(name, ""));
+    }
 
     public String getName() {
         return this.listName;
@@ -200,6 +226,7 @@ public class QENamelist {
 
     public boolean setValue(QEValue qeValue) {
         if (qeValue == null) {
+            //System.out.println("input qeValue is false");
             return false;
         }
 
@@ -235,23 +262,39 @@ public class QENamelist {
         if (line == null || line.isEmpty()) {
             return false;
         }
-
-        String[] strList = SmartSplitter.split(line.trim(), new char[] { '=', ':', ' ', ',' });
+        //edited by Jason D'Netto
+        //creating phonon graphs with plotband.x requires x amd y graph limits specified on the same line separated by space
+        line = line.replaceAll("'", "");
+        line = line.replaceAll("\"", "");
+        //System.out.println("lins is "+line);
+        String[] strList = SmartSplitter.split(line.trim(), new char[] { '=', ',' });
+        //end edit
         if (strList == null || strList.length < 2) {
+            //System.out.println("string length less than 2");
             return false;
         }
-
+        //System.out.println("strList.length = "+ Integer.toString(strList.length));
+        for (int i=0;i<strList.length;i++) {
+            //System.out.println("strList["+Integer.toString(i)+"] = "+strList[i]);
+        }
         String name = strList[0] == null ? "" : strList[0].trim();
         if (name.isEmpty()) {
+            //System.out.println("name is empty");
             return false;
         }
 
         String value = strList[1] == null ? "" : strList[1].trim();
         if (value.isEmpty()) {
+            //System.out.println("value is empty");
             return false;
+        } else {
+            //System.out.println("value = " + value);
         }
-
-        QEValue qeValue = QEValueBase.getInstance(name, value);
+        QEValue qeValue = null;
+        if (this.listName.equals(NAMELIST_PLOTBANDS)) {
+            qeValue = QEValuePlain.getInstance(name, value);
+        } else {qeValue = QEValueBase.getInstance(name, value);}
+        //System.out.println("qeValue is " + qeValue.toString());
         return this.setValue(qeValue);
     }
 
@@ -413,7 +456,10 @@ public class QENamelist {
 
     @Override
     public String toString() {
-        String str = "&" + this.listName + System.lineSeparator();
+        String str = "";
+        if (!this.listName.equals(NAMELIST_PLOTBANDS)) {
+            str = str + "&" + this.listName + System.lineSeparator();
+        }
 
         int maxLength = 0;
         for (QEValue qeValue : this.qeValues) {
@@ -437,12 +483,17 @@ public class QENamelist {
             if (qeValue != null) {
                 String name = qeValue.getName();
                 if (name != null && !name.startsWith("!")) {
-                    str = str + "    " + qeValue.toString(maxLength) + System.lineSeparator();
+                    if (!this.listName.equals(NAMELIST_PLOTBANDS)) {
+                        str = str + "    " + qeValue.toString(maxLength) + System.lineSeparator();
+                    } else {
+                        str = str + qeValue.toString();
+                    }
                 }
             }
         }
-
-        str = str + "/" + System.lineSeparator();
+        if (!this.listName.equals(NAMELIST_PLOTBANDS)) {
+            str = str + "/" + System.lineSeparator();
+        }
         return str;
     }
 

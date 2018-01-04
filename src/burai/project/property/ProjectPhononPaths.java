@@ -1,25 +1,10 @@
 /*
- * Copyright (C) 2017 Queensland University Of Technology
+ * Copyright (C) 2016 Satomichi Nishihara
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- *
- * @author Jason D'Netto <j.dnetto@qut.edu.au>
- * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
- * original code available from https://github.com/nisihara1/burai
+ * This file is distributed under the terms of the
+ * GNU General Public License. See the file `LICENSE'
+ * in the root directory of the present distribution,
+ * or http://www.gnu.org/copyleft/gpl.txt .
  */
 
 package burai.project.property;
@@ -27,17 +12,17 @@ package burai.project.property;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectBandPaths {
+public class ProjectPhononPaths {
 
     private static final String DEFAULT_LABEL = "";
 
     private List<Point> points;
 
-    public ProjectBandPaths() {
+    public ProjectPhononPaths() {
         this.points = null;
     }
 
-    public synchronized void clearBandPaths() {
+    public synchronized void clearPhononPaths() {
         if (this.points != null) {
             this.points.clear();
         }
@@ -104,8 +89,8 @@ public class ProjectBandPaths {
         this.getPoint(i).label = label;
     }
 
-    public synchronized ProjectBandPaths copyBandPaths() {
-        ProjectBandPaths other = new ProjectBandPaths();
+    public synchronized ProjectPhononPaths copyPhononPaths() {
+        ProjectPhononPaths other = new ProjectPhononPaths();
 
         if (this.points == null) {
             other.points = null;
