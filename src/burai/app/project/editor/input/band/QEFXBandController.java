@@ -166,7 +166,7 @@ public class QEFXBandController extends QEFXInputController {
             this.setupUnitCombo((QEKPoints) card);
             this.setupDefButton((QEKPoints) card);
         }
-
+        
         this.setupSymbolColumn();
         this.setupKxColumn();
         this.setupKyColumn();

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" >
    <children>
       <BorderPane prefWidth="395.0">
          <center>
@@ -160,10 +160,11 @@
          <children>
             <Label fx:id="totchargeLabel" text="Total Charge" />
             <Label fx:id="symmLabel" text="Use Symmetry" GridPane.rowIndex="1" />
-            <Label fx:id="kpointLabel" text="K-Points" GridPane.rowIndex="2" />
-            <Label fx:id="occupLabel" text="Occupations" GridPane.rowIndex="3" />
-            <Label fx:id="smearLabel" text="Smearing" GridPane.rowIndex="4" />
-            <Label fx:id="gaussLabel" text="Smearing Width" GridPane.rowIndex="5" />
+            
+            <Label fx:id="oToggleLabel" text="Use Occupations" GridPane.rowIndex="3" />
+            <Label fx:id="occupLabel" text="Occupations" GridPane.rowIndex="4" />
+            <Label fx:id="smearLabel" text="Smearing" GridPane.rowIndex="5" />
+            <Label fx:id="gaussLabel" text="Smearing Width" GridPane.rowIndex="6" />
             <GridPane prefWidth="200.0" GridPane.columnIndex="1">
                <children>
                   <TextField fx:id="totchargeField" prefWidth="200.0" />
@@ -176,27 +177,14 @@
                </rowConstraints>
             </GridPane>
             <ToggleButton fx:id="symmToggle" mnemonicParsing="false" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <GridPane hgap="5.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <TextField fx:id="kpointField1" />
-                  <TextField fx:id="kpointField2" GridPane.columnIndex="1" />
-                  <TextField fx:id="kpointField3" GridPane.columnIndex="2" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
-               </columnConstraints>
-               <padding>
-                  <Insets right="5.0" />
-               </padding>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <ComboBox fx:id="occupCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="smearCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <GridPane prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            
+            <!--Edited By Jason D'Netto
+            need to add an option to disable occupations being written to file 
+            at all, fixed is for insulators with a gap, smearing is for metals, tetrahedra option for dos absent, from file absent-->
+            <ToggleButton fx:id="occupToggle" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="occupCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="smearCombo" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <GridPane prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
                   <TextField fx:id="gaussField" prefWidth="100.0" />
                   <ComboBox fx:id="gaussUnit" prefWidth="97.0" GridPane.columnIndex="1" />
@@ -211,10 +199,11 @@
             </GridPane>
             <Button fx:id="totchargeButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
             <Button fx:id="symmButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="kpointButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="occupButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="smearButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Button fx:id="gaussButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            
+            <Button fx:id="oToggleButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="occupButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="smearButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="gaussButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="6" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
@@ -231,7 +220,141 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
+      </GridPane>
+      <!--Edited by Jason D'Netto
+      GridPane for new orgaisation of K-Points, including selecting K-Point options and dynamic list of points-->
+      <GridPane hgap="5.0" prefWidth="395.0" vgap="5.0">
+          <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /><!--row for label-->
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /><!--row for combobox-->
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /><!--row for automatic points-->
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /><!--row for automatic points offsets-->
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /><!--row for number of dynamic points-->
+              <RowConstraints minHeight="0.0" prefHeight="150.0" vgrow="ALWAYS" /><!--row for expanding gridpane of dynamic points-->
+          </rowConstraints>
+          <children>
+              <Label text="K-Points" styleClass="medium-text" BorderPane.alignment="CENTER">
+                 <font>
+                    <Font name="System Bold Italic" size="14.0" />
+                 </font>
+                 <padding>
+                    <Insets left="10.0" right="10.0" />
+                 </padding>
+              </Label>
+              <GridPane GridPane.rowIndex="1" >
+                  <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+                  </columnConstraints>
+                  <children>
+                      <Label fx:id="kOptsLabel" text="K-Point Offsets" GridPane.columnIndex="0" />
+                      <ComboBox fx:id="kOpts" GridPane.columnIndex="1" />
+                     <Button fx:id="kOptsButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+                  </children>
+              </GridPane>
+              <GridPane GridPane.rowIndex="2" >
+                  <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+                  </columnConstraints>
+                  <children>
+                      <Label fx:id="kpointLabel" text="K-Points" GridPane.columnIndex="0" />
+                      <GridPane hgap="5.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <children>
+                           <TextField fx:id="kpointField1" />
+                           <TextField fx:id="kpointField2" GridPane.columnIndex="1" />
+                           <TextField fx:id="kpointField3" GridPane.columnIndex="2" />
+                        </children>
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" prefWidth="60.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+                        </columnConstraints>
+                        <padding>
+                           <Insets right="5.0" />
+                        </padding>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                     </GridPane>
+                     <Button fx:id="kpointButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+                  </children>
+              </GridPane>
+              <GridPane GridPane.rowIndex="3" >
+                  <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+                  </columnConstraints>
+                  <children>
+                      <Label fx:id="kOffLabel" text="K-Point Offsets" GridPane.columnIndex="0" />
+                      <GridPane hgap="5.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <children>
+                           <ToggleButton fx:id="kOff1" />
+                           <ToggleButton fx:id="kOff2" GridPane.columnIndex="1" />
+                           <ToggleButton fx:id="kOff3" GridPane.columnIndex="2" />
+                        </children>
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" prefWidth="60.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+                        </columnConstraints>
+                        <padding>
+                           <Insets right="5.0" />
+                        </padding>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                     </GridPane>
+                     <Button fx:id="kOffButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+                  </children>
+              </GridPane>
+              <GridPane GridPane.rowIndex="4" >
+                  <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+                  </columnConstraints>
+                  <children>
+                      <Label fx:id="numKLabel" text="Number of K-Points" GridPane.columnIndex="0" />
+                      <TextField fx:id="numK" GridPane.columnIndex="1" />
+                      <GridPane GridPane.columnIndex="2" >
+                          <rowConstraints>
+                              <RowConstraints percentHeight="50.0" />
+                              <RowConstraints percentHeight="50.0" />
+                          </rowConstraints>
+                          <children>
+                            <Button fx:id="numKInc" contentDisplay="CENTER" depthTest="DISABLE" graphicTextGap="0.0" mnemonicParsing="false" rotate="0.0" text="^" textAlignment="CENTER" maxHeight="15" >
+                                <font>
+                                  <Font size="15.0" fx:id="x2" />
+                                </font>
+                            </Button>
+                            <Button fx:id="numKDec" contentDisplay="CENTER" depthTest="DISABLE" font="$x2" graphicTextGap="0.0" mnemonicParsing="false" rotate="180.0" text="^" textAlignment="CENTER" GridPane.rowIndex="1" maxHeight="15" >
+                                <rotationAxis>
+                                <Point3D z="1.0" />
+                              </rotationAxis>
+                            </Button>
+                          </children>
+                      </GridPane>
+                  </children>
+              </GridPane>
+              <ScrollPane GridPane.rowIndex="5" >
+                  <content>
+                    <GridPane fx:id="kGridPane" >
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                        </columnConstraints>
+                    </GridPane>
+                  </content>
+              </ScrollPane>
+          </children>
       </GridPane>
       <BorderPane prefWidth="395.0">
          <center>

@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.media.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.text.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="projectPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="425.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <StackPane prefHeight="400.0" prefWidth="425.0">
-         <children>
-            <Label text=" Sorry, Not Implemented." />
-         </children>
-      </StackPane>
-   </children>
+<AnchorPane fx:id="projectPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Accordion layoutX="0.0" layoutY="0.0" prefWidth="425.0">
+        <panes>
+        <TitledPane id="" fx:id="x1" animated="false" expanded="false" text="Calculation Options">
+          <content>
+            <ScrollPane fx:id="calcPane" content="$null" fitToHeight="true" prefHeight="700.0" prefWidth="425.0" />
+          </content>
+        </TitledPane>
+        <TitledPane id="" animated="false" expanded="false" text="Irreduceable Representations">
+          <content>
+            <ScrollPane fx:id="irrRepPane" content="$null" fitToHeight="true" prefHeight="420.0" prefWidth="425.0" />
+          </content>
+        </TitledPane>
+        <TitledPane id="" animated="false" text="K-Points">
+          <content>
+            <ScrollPane fx:id="kPane" content="$null" fitToHeight="true" prefHeight="175.0" prefWidth="425.0" />
+          </content>
+        </TitledPane>
+        <TitledPane id="" fx:id="x2" animated="false" text="Q-Points">
+          <content>
+            <ScrollPane fx:id="qPane" content="$null" fitToHeight="true" prefHeight="495.0" prefWidth="425.0" />
+          </content>
+        </TitledPane>
+      </panes>
+    </Accordion>
+  </children>
 </AnchorPane>

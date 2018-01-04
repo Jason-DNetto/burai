@@ -27,10 +27,11 @@ package burai.app.project.editor.input.items;
 import javafx.scene.control.ToggleButton;
 import javafx.util.Callback;
 import burai.com.graphic.ToggleGraphics;
-import burai.input.namelist.QEValue;
-import burai.input.namelist.QEValueBuffer;
+//import static javafx.scene.input.KeyCode.V;
+/*import burai.input.namelist.QEValue;
+import burai.input.namelist.QEValueBuffer;*/
 
-public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
+public abstract class FXToggleButton<V> extends FXDummyItem<ToggleButton> {
 
     private static final String TOGGLE_STYLE = "-fx-base: transparent";
 
@@ -42,40 +43,35 @@ public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
     private static final String GRAPHIC_STYLE_NO = "toggle-graphic-off";
 
     private boolean defaultSelected;
-    
-    /*Edited by Jason D'Netto to provide ToggleButtons with custom widths
-    allowing for longer descriptions in the labesl*/
-    private double width_used;
 
     private Callback<Boolean, V> valueFactory;
-
-    protected QEFXToggleButton(QEValueBuffer valueBuffer, ToggleButton controlItem, boolean defaultSelected) {
-        super(valueBuffer, controlItem);
-        this.width_used = GRAPHIC_WIDTH;
-        this.defaultSelected = defaultSelected;
-        this.valueFactory = null;
-        this.setupToggleGraphics();
-        this.setupToggleButton();
+    private double myWidth;
+    private double myHeight;
+    protected FXToggleButton(ToggleButton controlItem, boolean defaultSelected) {
+        this(controlItem,defaultSelected,GRAPHIC_WIDTH,GRAPHIC_HEIGHT);
+    }
+    protected FXToggleButton(ToggleButton controlItem, boolean defaultSelected, double customWidth){
+        this(controlItem,defaultSelected,customWidth,GRAPHIC_HEIGHT);
     }
     
-    protected QEFXToggleButton(QEValueBuffer valueBuffer, ToggleButton controlItem, boolean defaultSelected, double customWidth) {
-        super(valueBuffer, controlItem);
-        this.width_used = customWidth;
+    protected FXToggleButton(ToggleButton controlItem, boolean defaultSelected, double customWidth, double customHeight){
+        super(controlItem);
+        this.myWidth = customWidth;
+        this.myHeight = customHeight;
         this.defaultSelected = defaultSelected;
         this.valueFactory = null;
         this.setupToggleGraphics();
         this.setupToggleButton();
     }
 
-    protected abstract void setToValueBuffer(V value);
+    //protected abstract void setToValueBuffer(V value);
 
-    protected abstract boolean setToControlItem(V value, QEValue qeValue, boolean selected);
+    protected abstract boolean setToControlItem(V value, boolean selected);
 
     private void setupToggleGraphics() {
         this.controlItem.setText("");
         this.controlItem.setStyle(TOGGLE_STYLE);
         this.updateToggleGraphics();
-
         this.controlItem.selectedProperty().addListener(o -> {
             this.updateToggleGraphics();
         });
@@ -84,68 +80,58 @@ public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
     private void updateToggleGraphics() {
         if (this.controlItem.isSelected()) {
             this.controlItem.setGraphic(ToggleGraphics.getGraphic(
-                    this.width_used, GRAPHIC_HEIGHT, true, GRAPHIC_TEXT_YES, GRAPHIC_STYLE_YES));
+                    this.myWidth, this.myHeight, true, GRAPHIC_TEXT_YES, GRAPHIC_STYLE_YES));
         } else {
             this.controlItem.setGraphic(ToggleGraphics.getGraphic(
-                    this.width_used, GRAPHIC_HEIGHT, false, GRAPHIC_TEXT_NO, GRAPHIC_STYLE_NO));
+                    this.myWidth, this.myHeight, false, GRAPHIC_TEXT_NO, GRAPHIC_STYLE_NO));
         }
     }
 
     private void setupToggleButton() {
-        if (this.valueBuffer.hasValue()) {
+        /*if (this.valueBuffer.hasValue()) {
             this.onValueChanged(this.valueBuffer.getValue());
         } else {
             this.controlItem.setSelected(this.defaultSelected);
-        }
+        }*/
+        
+        this.controlItem.setSelected(this.defaultSelected);
 
-        this.controlItem.setOnAction(event -> {
+        /*this.controlItem.setOnAction(event -> {
             boolean selected = this.controlItem.isSelected();
 
-            if (this.valueFactory == null) {
+            /*if (this.valueFactory == null) {
                 this.valueBuffer.setValue(selected);
                 return;
-            }
+            }*/
 
-            V backedValue = this.valueFactory.call(selected);
+            /*V backedValue = this.valueFactory.call(selected);
             if (backedValue != null) {
                 this.setToValueBuffer(backedValue);
             }
-        });
+        });*/
     }
 
     @Override
-    protected void onValueChanged(QEValue qeValue) {
-        if (qeValue == null) {
-            this.controlItem.setSelected(this.defaultSelected);
-            return;
-        }
-
-        boolean value = qeValue.getLogicalValue();
-
+    protected void onValueChanged() {
         if (this.valueFactory == null) {
-            this.controlItem.setSelected(value);
+            this.controlItem.setSelected(this.controlItem.isSelected());
             return;
         }
-
         boolean[] selectedList = { true, false };
         for (boolean selected : selectedList) {
             V backedValue = this.valueFactory.call(selected);
             if (backedValue != null) {
-                boolean hasSet = this.setToControlItem(backedValue, qeValue, selected);
+                boolean hasSet = this.setToControlItem(backedValue, selected);
                 if (hasSet) {
                     return;
                 }
             }
         }
-
         this.controlItem.setSelected(this.defaultSelected);
     }
 
     public void setValueFactory(Callback<Boolean, V> valueFactory) {
         this.valueFactory = valueFactory;
-
-        if (this.valueBuffer.hasValue()) {
-            this.onValueChanged(this.valueBuffer.getValue());
-        }
+        this.onValueChanged();
     }
 }
