@@ -1,6 +1,12 @@
-This is the BURAI software package,
+This is a modified version of the BURAI software package,
 which is a GUI system of Quantum ESPRESSO <http://www.quantum-espresso.org>.
 
+Phonon interface added by Jason D'Netto - Research Support Specialist
+High Performance Computing & Advanced Research Computing Support Group (HPC-ARCs)
+Queensland University of Technology (QUT)
+on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT.
+
+Original Version available at https://github.com/nisihara1/burai
 Copyright (C) 2016 Satomichi Nishihara <nisihara.burai@gmail.com>.
 
 This system is developed as a JavaFX application, and requires JRE1.8
