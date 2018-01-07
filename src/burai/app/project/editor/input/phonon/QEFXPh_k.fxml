@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fx:id="projectPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <content>
+    <AnchorPane id="AnchorPane" prefHeight="144.0" prefWidth="411.0">
+      <children>
+        <VBox id="VBox" alignment="CENTER" disable="false" layoutX="0.0" layoutY="49.0" spacing="5.0">
+          <children>
+            <GridPane id="GridPane" alignment="TOP_LEFT" gridLinesVisible="true" prefHeight="95.0" prefWidth="410.0">
+              <children>
+                <Label alignment="CENTER" prefWidth="100.0" text="1" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label alignment="CENTER" prefWidth="82.9998779296875" text="2" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label alignment="CENTER" prefWidth="84.0" text="3" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <TextField id="k_1" fx:id="nk1" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField id="k_2" fx:id="nk2" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField id="k_3" fx:id="nk3" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField id="nk_1" fx:id="k1" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField id="nk_2" fx:id="k2" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField id="nk_3" fx:id="k3" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Button id="k_button" fx:id="nk_button" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="\\@" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <Button id="nk_button" fx:id="k_button" mnemonicParsing="false" text="\\@" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Label text="Monkhorst-Pack Grid" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label fx:id="k_label" text="Offset" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="nk_label" text="K Point Parameter" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="74.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="47.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="305.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
+        </VBox>
+        <Label layoutX="4.0" layoutY="4.0" prefHeight="20.0" text="Run a pw non-self consistent calculation with a different" />
+        <Label layoutX="4.0" layoutY="24.0" text="k-point grid thant that used for the charge density." />
+      </children>
+    </AnchorPane>
+  </content>
+</ScrollPane>

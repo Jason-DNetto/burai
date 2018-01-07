@@ -141,7 +141,7 @@ public class QEFXProjectIcon extends QEFXIconBase<Project> implements AtomEventL
             return null;
         }
 
-        if (this.isLightFigure || (cell.numAtoms(true) > MAX_ATOMS)) {
+        if (this.isLightFigure || (cell.numAtoms() > MAX_ATOMS)) {
             this.isLightFigure = true;
             this.detachAtomsVLight();
             return this.getLightFigure(size);

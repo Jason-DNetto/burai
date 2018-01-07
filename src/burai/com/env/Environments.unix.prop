@@ -1,4 +1,4 @@
-version             = 1.3
+version             = 1.4
 maximum_recents     = 64
 default_website     = https://www.google.com
 documents_website   = http://burai.readthedocs.io/en/latest/
@@ -13,3 +13,11 @@ command_pwscf       = pw.x -in $IN
 command_dos         = dos.x -in $IN
 command_projwfc     = projwfc.x -in $IN
 command_band        = bands.x -in $IN
+command_phonon      = ph.x -in $IN
+command_dynmat      = dynmat.x -in $IN
+command_q2r         = q2r.x -in $IN
+command_matdyn      = matdyn.x -in $IN
+command_plotband    = plotband.x < $IN
+command_lambda      = lambda.x -in $IN
+command_fqha        = fqha.x -in $IN
+command_d3          = d3.x -in $IN

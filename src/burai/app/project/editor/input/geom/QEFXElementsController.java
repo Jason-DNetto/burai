@@ -1,10 +1,26 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.app.project.editor.input.geom;
@@ -97,6 +113,8 @@ public class QEFXElementsController extends QEFXInputModelController {
 
     @FXML
     private Label ecutrhoLabel;
+    
+    private QEAtomicSpecies atomicSpecies;
 
     public QEFXElementsController(QEFXMainController mainController, QEInput input, Cell modelCell) {
         super(mainController, input, modelCell);
@@ -127,9 +145,13 @@ public class QEFXElementsController extends QEFXInputModelController {
             return;
         }
 
-        QEAtomicSpecies atomicSpecies = (QEAtomicSpecies) card;
+        this.atomicSpecies = (QEAtomicSpecies) card;
 
         this.elementBinder = new ElementAnsatzBinder(this.elementTable, atomicSpecies);
+    }
+    
+    public QEAtomicSpecies getAtomicSpecies(){
+        return this.atomicSpecies;
     }
 
     private void setupDefButton() {
@@ -345,8 +367,8 @@ public class QEFXElementsController extends QEFXInputModelController {
             return;
         }
 
-        QEAtomicSpecies atomicSpecies = (QEAtomicSpecies) card;
-        atomicSpecies.addListener(event -> this.updatePseudoConditions());
+        this.atomicSpecies = (QEAtomicSpecies) card;
+        this.atomicSpecies.addListener(event -> this.updatePseudoConditions());
     }
 
     private void updatePseudoConditions() {
@@ -355,16 +377,16 @@ public class QEFXElementsController extends QEFXInputModelController {
             return;
         }
 
-        QEAtomicSpecies atomicSpecies = (QEAtomicSpecies) card;
+        this.atomicSpecies = (QEAtomicSpecies) card;
 
         boolean hasPAW = false;
         boolean hasUS = false;
         boolean hasNC = false;
         String xcName = null;
 
-        int numElems = atomicSpecies.numSpecies();
+        int numElems = this.atomicSpecies.numSpecies();
         for (int i = 0; i < numElems; i++) {
-            PseudoPotential pseudoPot = atomicSpecies.getPseudoPotential(i);
+            PseudoPotential pseudoPot = this.atomicSpecies.getPseudoPotential(i);
 
             int pseudoType = PseudoData.PSEUDO_TYPE_UNKNOWN;
             String xcName2 = XCFUNC_ERROR_LABEL;

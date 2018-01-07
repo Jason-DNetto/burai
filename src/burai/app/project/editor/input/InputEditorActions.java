@@ -1,12 +1,28 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * and Samantha Adnett, formerly QUT
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
+ */
 package burai.app.project.editor.input;
 
 import java.io.IOException;
@@ -21,6 +37,7 @@ import burai.app.project.editor.EditorActions;
 import burai.app.project.editor.QEFXEditorComponent;
 import burai.app.project.editor.input.band.QEFXBand;
 import burai.app.project.editor.input.dos.QEFXDos;
+import burai.app.project.editor.input.geom.QEFXAtoms;
 import burai.app.project.editor.input.geom.QEFXGeom;
 import burai.app.project.editor.input.md.QEFXMd;
 import burai.app.project.editor.input.neb.QEFXNeb;
@@ -30,6 +47,8 @@ import burai.app.project.editor.input.scf.QEFXScf;
 import burai.app.project.editor.input.tddft.QEFXTddft;
 import burai.atoms.model.Cell;
 import burai.input.QEInput;
+import burai.input.card.QEAtomicPositions;
+import burai.input.card.QEAtomicSpecies;
 import burai.project.Project;
 
 public class InputEditorActions extends EditorActions {
@@ -126,9 +145,14 @@ public class InputEditorActions extends EditorActions {
                 this.components.put(EDITOR_ITEMS[7], new QEFXTddft(mainController, input));
             }
 
-            input = this.project == null ? null : this.project.getQEInputGeometry();
+            /*edited by Jason D'Netto*/
+            input = this.project == null ? null : this.project.getQEInputPhonon();
             if (input != null) {
-                this.components.put(EDITOR_ITEMS[8], new QEFXPhonon(mainController, input));
+                    QEFXGeom tempref = (QEFXGeom) this.components.get(EDITOR_ITEMS[0]);
+                    QEAtomicPositions readonly = tempref.getAtoms().getController().getAtomicPositions();
+                    QEAtomicSpecies readSpecies = tempref.getElements().getController().getAtomicSpecies();
+                this.components.put(EDITOR_ITEMS[8], new QEFXPhonon(mainController, input, readonly, readSpecies));
+                
             }
         }
     }

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane id="ScrollPane" fitToHeight="false" prefHeight="1403.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <AnchorPane prefHeight="1388.0">
+    <children>
+      <!--toggle button grid, 3 columns, 34 rows-->
+      <GridPane hgap="5.0" prefWidth="395.0" vgap="5.0">
+        <children>
+          <!--recover-->
+          <Label fx:id="recoverLabel" text="Recover an Interrupted Run" />
+          <ToggleButton fx:id="recoverToggle" mnemonicParsing="false" GridPane.columnIndex="1" />
+          <Button fx:id="recoverButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+          <!--Phonon Dispersions-->
+          <Label fx:id="PhDispLabel" text="Phonon Dispersions" GridPane.rowIndex="5" />
+          <ToggleButton fx:id="PhDispToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+          <Button fx:id="PhDispButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+          <!--electron_phonon options-->
+          <Label fx:id="elecPhonLabel" text="Electron Phonon Calculation" GridPane.rowIndex="6" />
+          <ComboBox fx:id="elecPhonBox" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+          <Button fx:id="elecPhonButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+          <!-- no gamma gamma tricks-->
+          <Label fx:id="NGGLabel" text="Disable Gamma Gamma Tricks" GridPane.rowIndex="7" />
+          <ToggleButton fx:id="NGGToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+          <Button fx:id="NGGButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+          <!--force diagonalization of dynamical matrix-->
+          <Label fx:id="ForceDiagLabel" text="Force Diagonalisation of Dynamical Matrix" GridPane.rowIndex="8" />
+          <ToggleButton fx:id="ForceDiagToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+          <Button fx:id="ForceDiagButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+          <!--dynamic polarizabilities-->
+          <Label fx:id="DynPolLabel" text="Dynamic Polarizabilities" GridPane.rowIndex="9" />
+          <ToggleButton fx:id="DynPolToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+          <Button fx:id="DynPolButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+          <!--Single q Vector Phonons-->
+          <Label fx:id="SingleQLabel" text="Single q Vector Phonons" GridPane.rowIndex="10" />
+          <ToggleButton fx:id="SingleQToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+          <Button fx:id="SingleQButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+          <!--macroscopic dielectric constant for q=0-->
+          <Label fx:id="q0macroLabel" text="q=0 Macroscopic Dielectric Constants" GridPane.rowIndex="11" />
+          <ToggleButton fx:id="q0macroToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+          <Button fx:id="q0macroButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+          <!--Electro-optic coefficients-->
+          <Label fx:id="eocoeffLabel" text="Electro-Optic Coefficients" GridPane.rowIndex="12" />
+          <ToggleButton fx:id="eocoeffToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+          <Button fx:id="eocoeffButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+          <!--Mode Symmetry Analysis-->
+          <Label fx:id="modeSymmLabel" text="Mode Symmetry Analysis" GridPane.rowIndex="13" />
+          <ToggleButton fx:id="modeSymmToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+          <Button fx:id="modeSymmButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+          <!--dv_xc dielectric constants-->
+          <Label styleClass="medium-text" text="Dielectric Constant with dV_xc=0" GridPane.rowIndex="14" />
+          <Label fx:id="dVHLabel" text="Without Loacl Fields (dV_H=0)" GridPane.rowIndex="15" />
+          <ToggleButton fx:id="dVHToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+          <Button fx:id="dVHButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="15" />
+          <Label fx:id="RPALabel" text="RPA Level" GridPane.rowIndex="16" />
+          <ToggleButton fx:id="RPAToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+          <Button fx:id="RPAButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="16" />
+          <!--effective charges-->
+          <Label styleClass="medium-text" text="Effective Charges From:" GridPane.rowIndex="17" />
+          <Label fx:id="dielecRespLabel" text="Dielectric Responses" GridPane.rowIndex="18" />
+          <ToggleButton fx:id="dielecRespToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+          <Button fx:id="dielecRespButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="18" />
+          <Label fx:id="PhDensRespLabel" text="Phonon Density Responses" GridPane.rowIndex="19" />
+          <ToggleButton fx:id="PhDensRespToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+          <Button fx:id="PhDensRespButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="19" />
+          <!--Raman Coefficients-->
+          <Label styleClass="medium-text" text="Raman Coefficients" GridPane.rowIndex="20" />
+          <Label fx:id="RamanCoeffLabel" text="Enable" GridPane.rowIndex="21" />
+          <ToggleButton fx:id="RamanCoeffToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="21" />
+          <Button fx:id="RamanCoeffButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="21" />
+          <Label styleClass="medium-text" text="Raman Thresholds" GridPane.rowIndex="22" />
+          <Label fx:id="xPsiLabel" text="Calculating x|Psi&gt;" GridPane.rowIndex="23" />
+          <TextField fx:id="xPsiText" GridPane.columnIndex="1" GridPane.rowIndex="23" />
+          <Button fx:id="xPsiButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="23" />
+          <Label fx:id="NSCFLabel" text="Non-Scf Wavefunction Calcutaion" GridPane.rowIndex="24" />
+          <TextField fx:id="NSCFText" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+          <Button fx:id="NSCFButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="24" />
+          <Label fx:id="ddkLabel" text="Wavefunction Derivation delta k" GridPane.rowIndex="25" />
+          <TextField fx:id="ddkText" GridPane.columnIndex="1" GridPane.rowIndex="25" />
+          <Button fx:id="ddkButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="25" />
+          <!--Potential Variations-->
+          <Label styleClass="medium-text" text="Potential Variations" GridPane.rowIndex="26" />
+          <Label fx:id="allQLabel" text="Compute at all q Points in Star" GridPane.rowIndex="27" />
+          <ToggleButton fx:id="allQToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="27" />
+          <Button fx:id="allQButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="27" />
+          <Label fx:id="saveQLabel" text="Save Displacement Patterns For Each q Vector" GridPane.rowIndex="28" />
+          <ToggleButton fx:id="saveQToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
+          <Button fx:id="saveQButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="28" />
+          <Label fx:id="potVarBasisLabel" text="Basis for Potential Variations" GridPane.rowIndex="29" />
+          <ComboBox fx:id="potVarBasisBox" GridPane.columnIndex="1" GridPane.rowIndex="29" />
+          <Button fx:id="potVarBasisButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="29" />
+          <!--Pertubation of Charge Density-->
+          <Label styleClass="medium-text" text="Pertubation of Charge Density" GridPane.rowIndex="30" />
+          <Label fx:id="allQdensLabel" text="Compute at all q Points in Star" GridPane.rowIndex="31" />
+          <ToggleButton fx:id="allQdensToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="31" />
+          <Button fx:id="allQdensButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="31" />
+          <Label fx:id="saveQdensLabel" text="Save Displacement Patterns For Each q Vector" GridPane.rowIndex="32" />
+          <ToggleButton fx:id="saveQdensToggle" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="32" />
+          <Button fx:id="saveQdensButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="32" />
+          <Label fx:id="charDensPertLabel" text="Basis for Pertubation of Charge Density" GridPane.rowIndex="33" />
+          <ComboBox fx:id="charDensPertBox" GridPane.columnIndex="1" GridPane.rowIndex="33" />
+          <Button fx:id="charDensPertButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="33" />
+          <!--Maximum Seconds-->
+          <Label fx:id="maxTimeLabel" text="Maximum Seconds" GridPane.rowIndex="1" />
+          <TextField fx:id="MaxTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+          <Button fx:id="MaxTimeButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+          <!--Self Consistency Threshold-->
+          <Label fx:id="SCTLabel" text="SCF Threshold" GridPane.rowIndex="2" />
+          <TextField fx:id="SCT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+          <Button fx:id="SCTButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+          <!--Max SCF Steps-->
+          <Label fx:id="MaxSCFLabel" text="Maximum Steps" GridPane.rowIndex="3" />
+          <TextField fx:id="MaxSCF" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+          <Button fx:id="MaxSCFButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+          <!--number of mixing iterations-->
+          <Label fx:id="NMixLabel" text="Mixing Iterations" GridPane.rowIndex="35" />
+          <TextField fx:id="NMix" GridPane.columnIndex="1" GridPane.rowIndex="35" />
+          <Button fx:id="NMixButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="35" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="240.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="85.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints vgrow="ALWAYS" /><!--row for dynamic mixing factors-->
+        </rowConstraints>
+      </GridPane>
+      <!--Grid for dynamic number of mixing factors-->
+      <ScrollPane id="ScrollPane" layoutX="0.0" layoutY="1255.0" prefHeight="129.0" prefViewportHeight="0.0" prefViewportWidth="400.0">
+        <content>
+          <GridPane fx:id="alphaGrid" gridLinesVisible="true">
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="240.0" />
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="85.0" />
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+            </columnConstraints>
+          </GridPane>
+        </content>
+      </ScrollPane>
+    </children>
+  </AnchorPane>
+</ScrollPane>

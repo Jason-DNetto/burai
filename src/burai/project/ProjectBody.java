@@ -1,10 +1,27 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * and Samantha Adnett, formerly QUT
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.project;
@@ -27,10 +44,17 @@ import burai.input.QEGeometryInput;
 import burai.input.QEInput;
 import burai.input.QEInputReader;
 import burai.input.QEMDInput;
+import burai.input.QEMatdynInput;
 import burai.input.QEOptInput;
+import burai.input.QEPhononInput;
+import burai.input.QEPlotbandInput;
+import burai.input.QEQ2RInput;
 import burai.input.QESCFInput;
 import burai.input.QESecondaryInput;
+import burai.input.card.QEKPoints;
+import burai.input.card.QEQPoints;
 import burai.project.property.ProjectProperty;
+import java.nio.file.Files;
 import burai.project.property.ProjectStatus;
 
 public class ProjectBody extends Project {
@@ -45,6 +69,10 @@ public class ProjectBody extends Project {
     private static final String FILE_NAME_MD = "espresso.md.in";
     private static final String FILE_NAME_DOS = "espresso.dos.in";
     private static final String FILE_NAME_BAND = "espresso.band.in";
+    private static final String FILE_NAME_PHONON = "espresso.phonon.in";
+    private static final String FILE_NAME_PH_Q2R = "espresso.q2r.in";
+    private static final String FILE_NAME_MATDYN = "espresso.matdyn.in";
+    private static final String FILE_NAME_PLOTBAND = "espresso.plotband.in";
 
     private static final String MARK_KEY_GEOM_HEAD = "[geometry0]";
     private static final String MARK_KEY_GEOM_ALL = "[geometry1]";
@@ -65,6 +93,10 @@ public class ProjectBody extends Project {
     private InputData mdData;
     private InputData dosData;
     private InputData bandData;
+    private InputData phononData;
+    private InputData q2rData;
+    private InputData matdynData;
+    private InputData plotbandData;
 
     private Cell cell;
 
@@ -114,6 +146,10 @@ public class ProjectBody extends Project {
         this.mdData = new InputData(FILE_NAME_MD);
         this.dosData = new InputData(FILE_NAME_DOS);
         this.bandData = new InputData(FILE_NAME_BAND);
+        this.phononData = new InputData(FILE_NAME_PHONON);
+        this.q2rData = new InputData(FILE_NAME_PH_Q2R);
+        this.matdynData = new InputData(FILE_NAME_MATDYN);
+        this.plotbandData = new InputData(FILE_NAME_PLOTBAND);
     }
 
     private boolean createDirectory() {
@@ -364,6 +400,101 @@ public class ProjectBody extends Project {
 
             return input;
         });
+        
+        this.phononData.setInputGenerator(file ->{
+            QESecondaryInput input = null;
+            if (file != null) {
+                input = new QEPhononInput(file);
+            } else if (inputReader != null) {
+                input = new QEPhononInput();
+                input.updateInputData(inputReader);
+            } else if (inputFile != null) {
+                input = new QEPhononInput(inputFile);
+            } else {
+                input = new QEPhononInput();
+            }
+
+            QEInput parentInput = this.scfData.getQEInput();
+            if (parentInput != null) {
+                input.setParentInput(parentInput);
+            }
+
+            return input;
+        });
+        
+        this.q2rData.setInputGenerator(file ->{
+            QESecondaryInput input = null;
+            if (file != null) {
+                input = new QEQ2RInput(file);
+            } else if (inputReader != null) {
+                input = new QEQ2RInput();
+                input.updateInputData(inputReader);
+            } else if (inputFile != null) {
+                input = new QEQ2RInput(inputFile);
+            } else {
+                input = new QEQ2RInput();
+            }
+
+            QEInput parentInput = this.phononData.getQEInput();
+            if (parentInput != null) {
+                input.setParentInput(parentInput);
+            }
+            
+            return input;
+        });
+        
+        this.matdynData.setInputGenerator(file ->{
+            QESecondaryInput input = null;
+            if (file != null) {
+                input = new QEMatdynInput(file);
+            } else if (inputReader != null) {
+                input = new QEMatdynInput();
+                input.updateInputData(inputReader);
+            } else if (inputFile != null) {
+                input = new QEMatdynInput(inputFile);
+            } else {
+                input = new QEMatdynInput();
+            }
+
+            QEInput parentInput = this.q2rData.getQEInput();
+            if (parentInput != null) {
+                input.setParentInput(parentInput);
+            }
+            if (this.bandData!=null){
+                if(this.bandData.getQEInput() != null){
+                    if (this.bandData.getQEInput().getCard(QEKPoints.CARD_NAME)!= null) {
+                        this.bandData.getQEInput().getCard(QEKPoints.CARD_NAME).copyTo(input.getCard(QEKPoints.CARD_NAME));
+                    } else {
+                        //System.out.println("bandData K card does not exist");
+                    }
+                } else {
+                    //System.out.println("bandData input does not exist");
+                }
+            } else {
+                //System.out.println("bandData does not exist");
+            }
+            return input;
+        });
+        
+        this.plotbandData.setInputGenerator(file ->{
+            QESecondaryInput input = null;
+            if (file != null) {
+                input = new QEPlotbandInput(file);
+            } else if (inputReader != null) {
+                input = new QEPlotbandInput();
+                input.updateInputData(inputReader);
+            } else if (inputFile != null) {
+                input = new QEPlotbandInput(inputFile);
+            } else {
+                input = new QEPlotbandInput();
+            }
+            QEInput parentInput = this.matdynData.getQEInput();
+            if (parentInput != null) {
+                input.setParentInput(parentInput);
+            }
+            
+            return input;
+        });
     }
 
     @Override
@@ -487,6 +618,41 @@ public class ProjectBody extends Project {
 
         return this.bandData.getQEInput();
     }
+    
+    @Override
+    public QEInput getQEInputPhonon(){
+        if (this.getDirectoryPath() != null) {
+            this.phononData.requestQEInput(this);
+        } else {
+            //System.out.println("directory path is null");
+        }
+        
+        return this.phononData.getQEInput();
+    }
+    
+    @Override
+    public QEInput getQEInputQ2R(){
+        if (this.getDirectoryPath() != null) {
+            this.q2rData.requestQEInput(this);
+        }
+        return this.q2rData.getQEInput();
+    }
+    
+    @Override
+    public QEInput getQEInputMatdyn(){
+        if (this.getDirectoryPath() != null) {
+            this.matdynData.requestQEInput(this);
+        }
+        return this.matdynData.getQEInput();
+    }
+    
+    @Override
+    public QEInput getQEInputPlotband(){
+        if (this.getDirectoryPath() != null) {
+            this.plotbandData.requestQEInput(this);
+        }
+        return this.plotbandData.getQEInput();
+    }
 
     @Override
     public Cell getCell() {
@@ -502,6 +668,10 @@ public class ProjectBody extends Project {
             this.mdData.requestQEInput(this);
             this.dosData.requestQEInput(this);
             this.bandData.requestQEInput(this);
+            this.phononData.requestQEInput(this);
+            this.q2rData.requestQEInput(this);
+            this.matdynData.requestQEInput(this);
+            this.plotbandData.requestQEInput(this);
         }
     }
 
@@ -514,6 +684,10 @@ public class ProjectBody extends Project {
         this.mdData.resolveQEInput();
         this.dosData.resolveQEInput();
         this.bandData.resolveQEInput();
+        this.phononData.resolveQEInput();
+        this.q2rData.resolveQEInput();
+        this.matdynData.resolveQEInput();
+        this.plotbandData.resolveQEInput();
     }
 
     @Override
@@ -561,7 +735,30 @@ public class ProjectBody extends Project {
         if (input != null) {
             this.markMap.put(MARK_KEY_GEOM_ALL, input.toString(true));
         }
-
+        
+        input = this.getQEInputPhonon();
+        if(input!=null){
+            this.mapQEInputs = this.mapQEInputs + "[phonon]" + System.lineSeparator();
+            this.mapQEInputs = this.mapQEInputs + input.toString() + System.lineSeparator();
+        }
+        
+        input = this.getQEInputQ2R();
+        if(input!=null){
+            this.mapQEInputs = this.mapQEInputs + "[q2r]" + System.lineSeparator();
+            this.mapQEInputs = this.mapQEInputs + input.toString() + System.lineSeparator();
+        }
+        
+        input = this.getQEInputMatdyn();
+        if(input!=null){
+            this.mapQEInputs = this.mapQEInputs + "[matdyn]" + System.lineSeparator();
+            this.mapQEInputs = this.mapQEInputs + input.toString() + System.lineSeparator();
+        }
+        
+        input = this.getQEInputPlotband();
+        if(input!=null){
+            this.mapQEInputs = this.mapQEInputs + "[plotband]" + System.lineSeparator();
+            this.mapQEInputs = this.mapQEInputs + input.toString() + System.lineSeparator();
+        }
     }
 
     @Override
@@ -661,8 +858,15 @@ public class ProjectBody extends Project {
             this.setDirectoryPath(directoryPath2);
         }
 
-        if (!this.createDirectory(directoryPath2)) {
-            return;
+        /* Edited by Jason D'Netto 06/07/17
+        if a directory does not already exist, try to create it,
+        exit if trying fails, 
+        not because you cant create something that already legitimately exists
+        */
+        if (!(new File(directoryPath2).exists())) {
+            if (!this.createDirectory(directoryPath2)) {
+                return;
+            }
         }
 
         this.resolveQEInputs();
@@ -674,6 +878,10 @@ public class ProjectBody extends Project {
         this.saveQEInput(this.mdData.getFileName(), this.getQEInputMd());
         this.saveQEInput(this.dosData.getFileName(), this.getQEInputDos());
         this.saveQEInput(this.bandData.getFileName(), this.getQEInputBand());
+        this.saveQEInput(this.phononData.getFileName(), this.getQEInputPhonon());
+        this.saveQEInput(this.q2rData.getFileName(), this.getQEInputQ2R());
+        this.saveQEInput(this.matdynData.getFileName(), this.getQEInputMatdyn());
+        this.saveQEInput(this.plotbandData.getFileName(), this.getQEInputPlotband());
 
         if (this.property != null) {
             ProjectStatus status = this.property.getStatus();

@@ -169,4 +169,5 @@ public class QEFXTextFieldInteger extends QEFXTextField {
         super.setLabel(label);
         this.setHintMessage(this.hintMessage);
     }
+    
 }

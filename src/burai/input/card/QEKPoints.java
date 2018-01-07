@@ -1,10 +1,26 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.input.card;
@@ -142,13 +158,11 @@ public class QEKPoints extends QECard {
         }
     }
 
-    public void addKPoint(QEKPoint k) {
+    public Integer addKPoint(QEKPoint k) {
         if (k == null) {
-            return;
+            return null;
         }
-
         this.kList.add(k);
-
         if (this.listeners != null) {
             QECardEvent event = new QECardEvent(this);
             event.setEventType(QECardEvent.EVENT_TYPE_KPOINT_ADDED);
@@ -159,15 +173,21 @@ public class QEKPoints extends QECard {
                 }
             }
         }
+        return (Integer)this.numKPoints()-1;
+    }
+    
+    public void setKPoint(int i,double x,double y,double z,double w) {
+        this.kList.get(i).setX(x);
+        this.kList.get(i).setY(y);
+        this.kList.get(i).setZ(z);
+        this.kList.get(i).setWeight(w);
     }
 
     public void removeKPoint(int index) {
         if (index < 0 || index >= this.kList.size()) {
-            return;
+            throw new ArrayIndexOutOfBoundsException("no k-point at index "+index);
         }
-
         this.kList.remove(index);
-
         if (this.listeners != null) {
             QECardEvent event = new QECardEvent(this);
             event.setEventType(QECardEvent.EVENT_TYPE_KPOINT_REMOVED);
@@ -415,9 +435,9 @@ public class QEKPoints extends QECard {
                 QEKPoint k = this.kList.get(0);
                 if (k != null) {
                     if (!k.hasLetter()) {
-                        this.kList.add(0, new QEKPoint(k.getX(), k.getY(), k.getZ(), 0.0));
+                        this.kList.add(0, new QEKPoint(k.getX(), k.getY(), k.getZ(), k.getWeight()));
                     } else {
-                        this.kList.add(0, new QEKPoint(k.getLetter(), 0.0));
+                        this.kList.add(0, new QEKPoint(k.getLetter(), k.getWeight()));
                     }
                 }
             }
@@ -500,26 +520,49 @@ public class QEKPoints extends QECard {
         }
     }
 
-    @Override
-    public String toString() {
-        String str = CARD_NAME + " {" + this.option + "}" + System.lineSeparator();
-
+    public String toString(boolean with_Header){
+        String str="";
         if (this.isGamma()) {
-            // NOP
-
+            if (with_Header){
+                str = CARD_NAME + " {" + this.option + "}" + System.lineSeparator();
+            }
         } else if (this.isAutomatic()) {
+            if (with_Header){
+                str = CARD_NAME + " {" + this.option + "}" + System.lineSeparator();
+            }
             str = str + String.format("%2d %2d %2d  %d %d %d%n",
                     this.kGrid[0], this.kGrid[1], this.kGrid[2], this.kOffset[0], this.kOffset[1], this.kOffset[2]);
 
         } else {
-            boolean asInteger = !(OPTION_TPIBA.equals(this.option) || OPTION_CRYSTAL.equals(this.option));
-            str = str + this.kList.size() + System.lineSeparator();
-            for (QEKPoint k : this.kList) {
-                str = str + k.toString(asInteger) + System.lineSeparator();
+            //boolean asInteger = !(OPTION_TPIBA.equals(this.option) || OPTION_CRYSTAL.equals(this.option));
+            //when calculating band structures, the band options set the k list option when the scf option might want the k list option to be something else
+            if (this.kList.size()>0){
+                if (with_Header){
+                    str = CARD_NAME + " {" + this.option + "}" + System.lineSeparator();
+                }
+                str = str + this.kList.size() + System.lineSeparator();
+                for (QEKPoint k : this.kList) {
+                    if(k.hasLetter()){
+                        str = str + k.toString(true) + System.lineSeparator();
+                    } else {
+                        str = str + k.toString(false) + System.lineSeparator();
+                    }
+                }
+            } else {//if no k list, but k grid, print k grid, if you want nothing, pick gamma
+                if (with_Header){
+                    str = CARD_NAME + " {automatic}" + System.lineSeparator();
+                }
+                str = str + String.format("%2d %2d %2d  %d %d %d%n",
+                    this.kGrid[0], this.kGrid[1], this.kGrid[2], this.kOffset[0], this.kOffset[1], this.kOffset[2]);
             }
         }
 
         return str;
+    }
+    
+    @Override
+    public String toString() {
+        return this.toString(true);
     }
 
     public void setAccurateCondition(QEInput input) {
@@ -544,15 +587,16 @@ public class QEKPoints extends QECard {
         if (lattInv == null) {
             return;
         }
-
+        
         double norm1 = Matrix3D.norm(lattInv[0]);
         double norm2 = Matrix3D.norm(lattInv[1]);
         double norm3 = Matrix3D.norm(lattInv[2]);
+        if(this.option==OPTION_GAMMA||this.option==OPTION_AUTOMATIC){
         int numK1 = Math.max(1, (int) (Math.rint(kRange * norm1) + 0.1));
         int numK2 = Math.max(1, (int) (Math.rint(kRange * norm2) + 0.1));
         int numK3 = Math.max(1, (int) (Math.rint(kRange * norm3) + 0.1));
 
-        if ((numK1 * numK2 * numK3) == 1) {
+        if ((numK1 * numK2 * numK3) == 0) {
             this.option = OPTION_GAMMA;
         } else {
             this.option = OPTION_AUTOMATIC;
@@ -564,6 +608,7 @@ public class QEKPoints extends QECard {
         this.kGrid[0] = numK1;
         this.kGrid[1] = numK2;
         this.kGrid[2] = numK3;
+        }
 
         if (this.listeners != null) {
             QECardEvent event = new QECardEvent(this);

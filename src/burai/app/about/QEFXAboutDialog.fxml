@@ -20,7 +20,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="logo-text" text="BURAI 1.3" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
-                  <Label style="-fx-font-family: monospace;" text="Copyright (C) 2016-2017 BURAI-team &lt;nisihara.burai@gmail.com&gt;." BorderPane.alignment="CENTER">
+                  <Label style="-fx-font-family: monospaced;" text="Copyright (C) 2017 Queensland University Of Technology&#10;Developed by Jason D'Netto &lt;j.dnetto@qut.edu.au&gt;&#10;on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT&#10;&#10;Created from work released under GPL v3&#10;by Satomichi Nishihara &lt;nisihara.burai@gmail.com&gt;." BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets top="12.0" />
                      </BorderPane.margin>

@@ -1,10 +1,26 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.input.card;
@@ -28,6 +44,10 @@ public class QECardEvent {
     public static final int EVENT_TYPE_KPOINT_REMOVED = 13;
     public static final int EVENT_TYPE_KPOINT_CLEARED = 14;
     public static final int EVENT_TYPE_KGRID_CHANGED = 15;
+    public static final int EVENT_TYPE_QPOINT_CHANGED = 16;
+    public static final int EVENT_TYPE_QPOINT_ADDED = 17;
+    public static final int EVENT_TYPE_QPOINT_REMOVED = 18;
+    public static final int EVENT_TYPE_QPOINT_CLEARED = 19;
 
     private QECard card;
 
@@ -38,6 +58,8 @@ public class QECardEvent {
     private int atomIndex;
 
     private int kpointIndex;
+    
+    private int qpointIndex;
 
     public QECardEvent(QECard card) {
         if (card == null) {
@@ -48,6 +70,7 @@ public class QECardEvent {
         this.eventType = EVENT_TYPE_NULL;
         this.atomIndex = -1;
         this.kpointIndex = -1;
+        this.qpointIndex = -1;
     }
 
     public QECard getCard() {
@@ -84,5 +107,13 @@ public class QECardEvent {
 
     public int getKPointIndex() {
         return this.kpointIndex;
+    }
+    
+    public void setQPointIndex(int qpointIndex) {
+        this.qpointIndex = qpointIndex;
+    }
+
+    public int getQPointIndex() {
+        return this.qpointIndex;
     }
 }

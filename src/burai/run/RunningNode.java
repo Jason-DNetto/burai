@@ -1,10 +1,26 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.run;
@@ -26,6 +42,8 @@ import burai.com.path.QEPath;
 import burai.input.QEInput;
 import burai.project.Project;
 import burai.run.parser.LogParser;
+import burai.run.parser.PhParser;
+import burai.run.parser.PhPlotbandParser;
 
 public class RunningNode implements Runnable {
 
@@ -184,19 +202,42 @@ public class RunningNode implements Runnable {
         if (inpFile == null) {
             return;
         }
-
+        //DEBUG
+        ////System.out.println("input file name is "+inpName);
+        
         List<String[]> commandList = type2.getCommandList(inpName, numProcesses2);
         if (commandList == null || commandList.isEmpty()) {
             return;
         }
-
+        //DEBUG
+        for(int loopcount=0;loopcount<commandList.size();loopcount++){
+            for(int loopcount2=0;loopcount2<commandList.get(loopcount).length;loopcount2++){
+                //System.out.print(commandList.get(loopcount)[loopcount2]+" ");
+            }
+            //System.out.println();
+        }
+        //end DEBUG
         List<RunningCondition> conditionList = type2.getConditionList();
         if (conditionList == null || conditionList.size() < commandList.size()) {
+            //debug
+            if (conditionList == null) {
+                //System.out.println("condition list is null");//DEBUG
+            } else {
+                //System.out.println("condition list size id "+Integer.toString(conditionList.size())+" while command list size is "+Integer.toString(commandList.size()));//DEBUG
+            }
+            //end debug
             return;
         }
 
         List<InputEditor> inputEditorList = type2.getInputEditorList(this.project);
         if (inputEditorList == null || inputEditorList.size() < commandList.size()) {
+            //debug
+            if (conditionList == null) {
+                //System.out.println("input editor list is null");//DEBUG
+            } else {
+                //System.out.println("input editor list size id "+Integer.toString(inputEditorList.size())+" while command list size is "+Integer.toString(commandList.size()));//DEBUG
+            }
+            //end debug
             return;
         }
 
@@ -212,11 +253,25 @@ public class RunningNode implements Runnable {
 
         List<LogParser> parserList = type2.getParserList(this.project);
         if (parserList == null || parserList.size() < commandList.size()) {
+            //debug
+            if (conditionList == null) {
+                //System.out.println("parser list is null");//DEBUG
+            } else {
+                //System.out.println("parser list size id "+Integer.toString(parserList.size())+" while command list size is "+Integer.toString(commandList.size()));//DEBUG
+            }
+            //end debug
             return;
         }
 
         List<PostOperation> postList = type2.getPostList();
         if (postList == null || postList.size() < commandList.size()) {
+            //debug
+            if (conditionList == null) {
+                //System.out.println("post list is null");//DEBUG
+            } else {
+                //System.out.println("post list size id "+Integer.toString(postList.size())+" while command list size is "+Integer.toString(commandList.size()));//DEBUG
+            }
+            //end debug
             return;
         }
 
@@ -228,22 +283,26 @@ public class RunningNode implements Runnable {
         for (int i = 0; i < commandList.size(); i++) {
             synchronized (this) {
                 if (!this.alive) {
+                    //System.out.println("this is not alive");
                     return;
                 }
             }
 
             String[] command = commandList.get(i);
             if (command == null || command.length < 1) {
+                //System.out.println("no commands");
                 continue;
             }
 
             RunningCondition condition = conditionList.get(i);
             if (condition == null) {
+                //System.out.println("no conditions");
                 continue;
             }
 
             InputEditor inputEditor = inputEditorList.get(i);
             if (inputEditor == null) {
+                //System.out.println("no input editor lists");
                 continue;
             }
 
@@ -261,35 +320,54 @@ public class RunningNode implements Runnable {
 
             LogParser parser = parserList.get(i);
             if (parser == null) {
+                //System.out.println("no parsers");
                 continue;
             }
 
             PostOperation post = postList.get(i);
             if (post == null) {
+                //System.out.println("no post");
                 continue;
             }
 
             QEInput input2 = inputEditor.editInput(input);
             if (input2 == null) {
+                //System.out.println("no input editors");
                 continue;
             }
-
+            //DEBUG
+            //System.out.print("running ");
+            for(int loopcount2=0;loopcount2<commandList.get(i).length;loopcount2++){
+                //System.out.print(commandList.get(i)[loopcount2]+" ");
+            }
+            //System.out.println();
+            //System.out.println(input2.toString());
+            
             if (!condition.toRun(this.project, input2)) {
+                //System.out.println("condition to run is false");
                 continue;
             }
 
             boolean inpStatus = this.writeQEInput(input2, inpFile);
             if (!inpStatus) {
+                //System.out.println("input status is false");
                 continue;
             }
 
             File logFile = new File(directory, logName);
             File errFile = new File(directory, errName);
             this.deleteLogFiles(logFile, errFile);
+                //System.out.println("no logfile");
+                //System.out.println("no errfile");
 
             builder = new ProcessBuilder();
             builder.directory(directory);
             builder.command(command);
+            if (!command[0].contains("plotband.")) {
+                builder.environment().put("OMP_NUM_THREADS", Integer.toString(numThreads2));
+            } else {
+                builder.redirectInput(inpFile);
+            }
             builder.redirectOutput(logFile);
             builder.redirectError(errFile);
             builder.environment().put("OMP_NUM_THREADS", Integer.toString(numThreads2));
@@ -300,8 +378,12 @@ public class RunningNode implements Runnable {
                     this.objProcess = builder.start();
                 }
 
-                parser.startParsing(logFile);
-
+                if (!(parser instanceof PhPlotbandParser)){
+                    parser.startParsing(logFile,inpFile);
+                } else {//if PhParser, take k-point specification from either espresso.matdyn.in or espresso.band.in
+                    parser.startParsing(logFile, new File(this.getDirectory(),"espresso.band.in"));
+                }
+                
                 if (this.objProcess != null) {
                     if (this.objProcess.waitFor() != 0) {
                         errOccurred = true;

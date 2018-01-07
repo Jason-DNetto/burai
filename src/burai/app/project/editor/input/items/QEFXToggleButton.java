@@ -1,10 +1,26 @@
 /*
- * Copyright (C) 2016 Satomichi Nishihara
+ * Copyright (C) 2017 Queensland University Of Technology
  *
- * This file is distributed under the terms of the
- * GNU General Public License. See the file `LICENSE'
- * in the root directory of the present distribution,
- * or http://www.gnu.org/copyleft/gpl.txt .
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ *
+ * @author Jason D'Netto <j.dnetto@qut.edu.au>
+ * on behalf of the Manufacturing with advanced materials enabling platform, IFE, QUT
+ * modified from code developed by Satomichi Nishihara <nisihara.burai@gmail.com>
+ * original code available from https://github.com/nisihara1/burai
  */
 
 package burai.app.project.editor.input.items;
@@ -27,12 +43,25 @@ public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
     private static final String GRAPHIC_STYLE_NO = "toggle-graphic-off";
 
     private boolean defaultSelected;
+    
+    /*Edited by Jason D'Netto to provide ToggleButtons with custom widths
+    allowing for longer descriptions in the labesl*/
+    private double width_used;
 
     private Callback<Boolean, V> valueFactory;
 
     protected QEFXToggleButton(QEValueBuffer valueBuffer, ToggleButton controlItem, boolean defaultSelected) {
         super(valueBuffer, controlItem);
-
+        this.width_used = GRAPHIC_WIDTH;
+        this.defaultSelected = defaultSelected;
+        this.valueFactory = null;
+        this.setupToggleGraphics();
+        this.setupToggleButton();
+    }
+    
+    protected QEFXToggleButton(QEValueBuffer valueBuffer, ToggleButton controlItem, boolean defaultSelected, double customWidth) {
+        super(valueBuffer, controlItem);
+        this.width_used = customWidth;
         this.defaultSelected = defaultSelected;
         this.valueFactory = null;
         this.setupToggleGraphics();
@@ -46,7 +75,6 @@ public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
     private void setupToggleGraphics() {
         this.controlItem.setText("");
         this.controlItem.setStyle(TOGGLE_STYLE);
-
         this.updateToggleGraphics();
 
         this.controlItem.selectedProperty().addListener(o -> {
@@ -57,10 +85,10 @@ public abstract class QEFXToggleButton<V> extends QEFXItem<ToggleButton> {
     private void updateToggleGraphics() {
         if (this.controlItem.isSelected()) {
             this.controlItem.setGraphic(ToggleGraphics.getGraphic(
-                    GRAPHIC_WIDTH, GRAPHIC_HEIGHT, true, GRAPHIC_TEXT_YES, GRAPHIC_STYLE_YES));
+                    this.width_used, GRAPHIC_HEIGHT, true, GRAPHIC_TEXT_YES, GRAPHIC_STYLE_YES));
         } else {
             this.controlItem.setGraphic(ToggleGraphics.getGraphic(
-                    GRAPHIC_WIDTH, GRAPHIC_HEIGHT, false, GRAPHIC_TEXT_NO, GRAPHIC_STYLE_NO));
+                    this.width_used, GRAPHIC_HEIGHT, false, GRAPHIC_TEXT_NO, GRAPHIC_STYLE_NO));
         }
     }
 

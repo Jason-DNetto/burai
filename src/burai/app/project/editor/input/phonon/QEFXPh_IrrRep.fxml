@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane id="ScrollPane" prefHeight="732.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <AnchorPane prefHeight="724.0" prefWidth="400.0">
+    <children>
+      <!--Grid pane for selecting by ranges-->
+      <GridPane hgap="5.0" prefWidth="395.0" vgap="5.0">
+        <children>
+          <Label fx:id="rangeLabel" text="Select By Index Range" />
+          <ToggleButton fx:id="sel_index_by_range" mnemonicParsing="false" GridPane.columnIndex="1" />
+          <Button fx:id="rangeButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+          <Label fx:id="FromLabel" text="Index From" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+          <TextField fx:id="index_from" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+          <Button fx:id="FromButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+          <Label fx:id="ToLabel" text="To" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+          <TextField fx:id="index_to" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+          <Button fx:id="ToButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <!--Grid pae for toggle to select from lists-->
+      <GridPane hgap="5.0" layoutX="0.0" layoutY="106.0" prefWidth="395.0" vgap="5.0">
+        <children>
+          <Label fx:id="selectLabel" text="Select Specific Atoms" />
+          <ToggleButton fx:id="sel_index_by_sel" mnemonicParsing="false" GridPane.columnIndex="1" />
+          <!--toggleGroup="$index_type_selection"-->
+          <Button fx:id="selectButton" mnemonicParsing="false" text="\@" GridPane.columnIndex="2" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <!--Grid Pane for modenum lists and selection toggles-->
+      <Label layoutX="0.0" layoutY="147.0" text="Select Irreduceable Representation" />
+      <GridPane id="GridPane" fx:id="selectGrid" layoutX="2.0" layoutY="167.0" prefWidth="425.0">
+        <children>
+          <TableView fx:id="irr_rep_table" prefHeight="263.0" prefWidth="363.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <columns>
+              <TableColumn editable="false" prefWidth="35.0" resizable="false" text="#" fx:id="indexColumn" />
+              <TableColumn editable="false" resizable="false" text="Element" fx:id="elementColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="X" fx:id="xColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="Y" fx:id="yColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="Z" fx:id="zColumn" />
+            </columns>
+          </TableView>
+          <GridPane prefWidth="49.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <children>
+              <!--empty grid pane for dynamically assigning selection toggles-->
+              <GridPane fx:id="selectionColumn" prefHeight="239.0" prefWidth="49.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="239.0" minHeight="10.0" prefHeight="238.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" prefWidth="360.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <!--Grid pane for nat_todo lists and selection toggles-->
+      <Label layoutX="2.0" layoutY="437.0" text="Select Atom to Move" />
+      <GridPane id="NTDGridPane" fx:id="NTDselectGrid" layoutX="0.0" layoutY="457.0" prefWidth="425.0">
+        <children>
+          <TableView fx:id="nat_todo_table" prefHeight="263.0" prefWidth="363.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <columns>
+              <TableColumn editable="false" prefWidth="35.0" resizable="false" text="#" fx:id="NTDindexColumn" />
+              <TableColumn editable="false" resizable="false" text="Element" fx:id="NTDelementColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="X" fx:id="NTDxColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="Y" fx:id="NTDyColumn" />
+              <TableColumn editable="false" prefWidth="85.0" resizable="false" text="Z" fx:id="NTDzColumn" />
+            </columns>
+          </TableView>
+          <GridPane prefWidth="49.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <children>
+              <!--empty grid pane for dynamically assigning selection toggles-->
+              <GridPane fx:id="NTDselectionColumn" prefHeight="239.0" prefWidth="49.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="239.0" minHeight="10.0" prefHeight="238.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" prefWidth="360.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+    </children>
+  </AnchorPane>
+</ScrollPane>

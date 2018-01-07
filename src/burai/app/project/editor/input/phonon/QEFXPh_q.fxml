@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane id="ScrollPane" prefHeight="659.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <AnchorPane id="AnchorPane" prefHeight="651.0" prefWidth="411.0">
+    <children>
+      <!--Grid Pane for saving each Q point seperately lqdir-->
+      <GridPane layoutX="7.0" layoutY="608.0" prefWidth="395.0">
+        <children>
+          <Label fx:id="x1Label" text="Save Each q-point Seperately" />
+          <ToggleButton fx:id="x1" mnemonicParsing="false" GridPane.columnIndex="1" />
+          <Button fx:id="x1Default" GridPane.columnIndex="2" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <GridPane layoutX="8.0" layoutY="571.0" prefWidth="395.0">
+        <children>
+          <Label fx:id="qBandLabel" text="Band Form" />
+          <ToggleButton fx:id="qBand" mnemonicParsing="false" GridPane.columnIndex="1" />
+          <Button fx:id="qBandDefault" GridPane.columnIndex="2" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <!--Grid Pane For qplot ComboBox-->
+      <GridPane layoutX="8.0" layoutY="128.0" prefWidth="395.0">
+        <children>
+          <Label fx:id="qIsLabel" text="Q Points as List" />
+          <ToggleButton fx:id="qIsVector" GridPane.columnIndex="1" />
+          <Button fx:id="qIsDefault" GridPane.columnIndex="2" />
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <Group id="Group" fx:id="ldispQplotFalseGroup" layoutX="8.0" layoutY="122.0">
+        <children>
+          <!--Grid Pane for q points
+        need a 3x(1+column headings) grid for q points if ldisp is true, might be the same as the k points for scf calc-->
+          <GridPane gridLinesVisible="true" layoutX="2.0" layoutY="52.0" prefHeight="55.0" prefWidth="375.0">
+            <children>
+              <Label fx:id="xq1Label" text="q1" />
+              <Label fx:id="xq2Label" text="q2" GridPane.columnIndex="1" />
+              <Label fx:id="xq3Label" text="q3" GridPane.columnIndex="2" />
+              <Button fx:id="xqButton" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+              <TextField fx:id="xq1" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+              <TextField fx:id="xq2" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+              <TextField fx:id="xq3" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" prefWidth="50.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+          <Label fx:id="xqLabel" layoutX="0.0" layoutY="36.0" text="Phonon Wave Vector" />
+        </children>
+      </Group>
+      <Group id="Group" fx:id="qplotTrueGroup" layoutX="7.0" layoutY="236.0">
+        <children>
+          <!--text field and buttons to assign number of q points nqs-->
+          <Label layoutX="165.0" layoutY="7.0" text="Number of Points" />
+          <Button fx:id="inc_number_button" contentDisplay="CENTER" depthTest="DISABLE" graphicTextGap="0.0" layoutX="338.0" layoutY="0.0" minHeight="18.0" minWidth="37.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="37.0" rotate="0.0" text="^" textAlignment="CENTER">
+            <font>
+              <Font size="15.0" fx:id="x2" />
+            </font>
+          </Button>
+          <Button fx:id="dec_number_button" contentDisplay="CENTER" depthTest="DISABLE" font="$x2" graphicTextGap="0.0" layoutX="338.0" layoutY="18.0" minHeight="12.0" minWidth="37.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="37.0" rotate="180.0" text="^" textAlignment="CENTER">
+            <rotationAxis>
+              <Point3D z="1.0" />
+            </rotationAxis>
+          </Button>
+          <TextField fx:id="numQPoints" alignment="CENTER_RIGHT" layoutX="282.0" layoutY="7.0" prefWidth="56.0" text="1" />
+          <GridPane id="GridPane" layoutX="1.0" layoutY="35.0" prefHeight="255.0" prefWidth="389.0">
+            <children>
+              <ScrollPane id="ScrollPane" prefViewportHeight="243.0" prefViewportWidth="401.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <content>
+                  <!--grid for weights, column headings q(: ,1)|l(q(: ,2)-q(: ,1))|m(q(: ,3)-q(: ,1))-->
+                  <GridPane fx:id="qplot" gridLinesVisible="true" prefHeight="237.0" prefWidth="377.5">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+                </content>
+              </ScrollPane>
+              <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <children>
+                  <Label text="q1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <Label text="q2" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <Label text="q3" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  <Label text="Weight" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                </children>
+                <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+              </GridPane>
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="262.0" minHeight="10.0" prefHeight="251.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+          <Label fx:id="numQLabel" layoutX="3.0" layoutY="8.0" text="List of q Points" />
+          <!--Grid for Rectangular Weighted System Toggle-->
+          <GridPane layoutX="0.0" layoutY="298.0" prefWidth="395.0">
+            <children>
+              <Label fx:id="RWSLabel" text="Rectangular Weighted System" />
+              <ToggleButton fx:id="RWSToggle" mnemonicParsing="false" GridPane.columnIndex="1" />
+              <Button fx:id="RWSDefault" GridPane.columnIndex="2" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="120.0" />
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="205.0" />
+              <ColumnConstraints hgrow="SOMETIMES" prefWidth="50.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+        </children>
+      </Group>
+      <Group id="Group" fx:id="ldispTrueGroup" layoutX="9.0" layoutY="14.0">
+        <children>
+          <!--Grid Pane for q points
+        need a 3x(1+column headings) grid for q points if ldisp is true, might be the same as the k points for scf calc-->
+          <GridPane id="q_table" gridLinesVisible="true" layoutX="0.0" layoutY="20.0" prefHeight="55.0" prefWidth="395.0">
+            <children>
+              <Label fx:id="nq1Label" text="q1" />
+              <Label fx:id="nq2Label" text="q2" GridPane.columnIndex="1" />
+              <Label fx:id="nq3Label" text="q3" GridPane.columnIndex="2" />
+              <TextField fx:id="nq1" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+              <TextField fx:id="nq2" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+              <TextField fx:id="nq3" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+              <Button fx:id="nqButton" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" prefWidth="50.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+          <Label layoutX="2.0" layoutY="0.0" text="Monkhorst-Pack Grid" />
+        </children>
+      </Group>
+    </children>
+  </AnchorPane>
+</ScrollPane>
